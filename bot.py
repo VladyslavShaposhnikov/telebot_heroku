@@ -13,7 +13,7 @@ def send_welcom(massage):
 
 @bot.message_handler(commands=['help'])
 def send_welcom(massage):
-    bot.send_message(massage.chat.id,'Allows command:\n /weather\n /instagram\n /pracuj\n /rabota')
+    bot.send_message(massage.chat.id,'Allows command:\n /weather (To see what is the weather in Bilopillya)\n /instagram (To see Nelya Holik instagram)\n /pracuj (To see job offers in Poland website "Pracuj.pl")\n /rabota (To see job offers in Ukraine website "rabota.ua")')
 
 r = requests.get("https://sinoptik.ua/погода-белополье")
 html = bs(r.content,'html.parser')
