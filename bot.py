@@ -46,6 +46,7 @@ def weather_at(url, city):
         print(descr)
     bot.send_message(massage.chat.id,'The weather in ' + city + ' city:\n' +
         day + '\n' + date +' '+ month +'\n'+ t_min +' '+ t_max +'\n'+ descr)
+
 def weather_answer(call):
     if call.data == 'Bilopillya':
         weather_at(url="https://sinoptik.ua/погода-белополье", city='Bilopillya')
@@ -54,11 +55,11 @@ def weather_answer(call):
     elif call.data == 'Sumy':
         weather_at(url="https://sinoptik.ua/погода-сумы", city='Sumy')
     elif call.data == 'Kharkiv':
-        weather_at(url="https://sinoptik.ua/погода-белополье", city='Kharkiv')
+        weather_at(url="https://sinoptik.ua/погода-харьков", city='Kharkiv')
     elif call.data == 'Lviv':
-        weather_at(url="https://sinoptik.ua/погода-киев", city='Lviv')
+        weather_at(url="https://sinoptik.ua/погода-львов", city='Lviv')
     elif call.data == 'Khmelnitsky':
-        weather_at(url="https://sinoptik.ua/погода-сумы", city='Khmelnitsky')
+        weather_at(url="https://sinoptik.ua/погода-хмельницкий", city='Khmelnitsky')
     else:
         weather_at(url="https://sinoptik.ua/погода-дрогобыч", city='Drohobych')
 
