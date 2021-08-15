@@ -43,9 +43,7 @@ def send_weather(massage):
     item_khmelnitsky = types.KeyboardButton(text='Khmelnitsky', callback_data='Khmelnitsky')
     item_drohobych = types.KeyboardButton(text='Drohobych', callback_data='Drohobych')
 
-    markup_inline.row(item_bilopillya, item_sumy, item_kiev)
-    markup_inline.row(item_khmelnitsky, item_lviv)
-    markup_inline.row(item_drohobych, item_kharkiv)
+    markup_inline.add(item_bilopillya, item_sumy, item_kiev, item_khmelnitsky, item_lviv, item_drohobych, item_kharkiv)
     bot.send_message(massage.chat.id, 'Choose the city in which you want to see the weather for today', reply_markup=markup_inline)
 
 @bot.callback_query_handler(func = lambda call: True)
@@ -64,14 +62,6 @@ def weather_answer(call):
         weather_at(url="https://sinoptik.ua/погода-сумы", city='Khmelnitsky')
     else:
         weather_at(url="https://sinoptik.ua/погода-дрогобыч", city='Drohobych')
-
-    weather_at(url="https://sinoptik.ua/погода-белополье", city='Bilopillya')
-    weather_at(url="https://sinoptik.ua/погода-киев", city='Kiev')
-    weather_at(url="https://sinoptik.ua/погода-сумы", city='Sumy')
-    weather_at(url="https://sinoptik.ua/погода-харьков", city='Kharkiv')
-    weather_at(url="https://sinoptik.ua/погода-львов", city='Lviv')
-    weather_at(url="https://sinoptik.ua/погода-хмельницкий", city='Khmelnitsky')
-    weather_at(url="https://sinoptik.ua/погода-дрогобыч", city='Drohobych')
 
 @bot.message_handler(commands=['instagram'])
 def send_link(massage):
