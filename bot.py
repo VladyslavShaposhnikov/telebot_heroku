@@ -7,22 +7,6 @@ from config import token
 
 bot = telebot.TeleBot(token)
 
-def weather_at(url, city):
-    r = requests.get(url)
-    html = bs(r.content,'html.parser')
-
-    for elem in html.select('#content'):
-        day = elem.select('.tabs .day-link')[0].text
-        date = elem.select('.tabs .date')[0].text
-        month = elem.select('.tabs .month')[0].text
-        t_min = elem.select('.temperature .min')[0].text
-        t_max = elem.select('.temperature .max')[0].text
-        descr = elem.select('.wDescription .description')[0].text
-        print(day,'\n',date,month,'\n', t_min, t_max)
-        print(descr)
-    bot.send_message(massage.chat.id,'The weather in ' + city + ' city:\n' +
-        day + '\n' + date +' '+ month +'\n'+ t_min +' '+ t_max +'\n'+ descr)
-
 @bot.message_handler(commands=['start'])
 def send_welcom(massage):
     bot.send_message(massage.chat.id,"Howdy, I can send you the weather in some Ukrainian cities, show realy beautiful instagram and I'll help you to find job on junior python developer position in Poland or Ukraine. Good luck and have fan \nFor check commands type /help")
@@ -47,6 +31,21 @@ def get_city(massage):
     bot.send_message(massage.chat.id, 'Choose the city in which you want to see the weather for today', reply_markup=markup_inline)
 
 @bot.callback_query_handler(func = lambda call: True)
+def weather_at(url, city):
+    r = requests.get(url)
+    html = bs(r.content,'html.parser')
+
+    for elem in html.select('#content'):
+        day = elem.select('.tabs .day-link')[0].text
+        date = elem.select('.tabs .date')[0].text
+        month = elem.select('.tabs .month')[0].text
+        t_min = elem.select('.temperature .min')[0].text
+        t_max = elem.select('.temperature .max')[0].text
+        descr = elem.select('.wDescription .description')[0].text
+        print(day,'\n',date,month,'\n', t_min, t_max)
+        print(descr)
+    bot.send_message(massage.chat.id,'The weather in ' + city + ' city:\n' +
+        day + '\n' + date +' '+ month +'\n'+ t_min +' '+ t_max +'\n'+ descr)
 def weather_answer(call):
     if call.data == 'Bilopillya':
         weather_at(url="https://sinoptik.ua/погода-белополье", city='Bilopillya')
