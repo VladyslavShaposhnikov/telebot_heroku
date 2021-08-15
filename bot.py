@@ -7,9 +7,25 @@ from config import token
 
 bot = telebot.TeleBot(token)
 
+def weather_at(url, city):
+    r = requests.get(url)
+    html = bs(r.content,'html.parser')
+
+    for elem in html.select('#content'):
+        day = elem.select('.tabs .day-link')[0].text
+        date = elem.select('.tabs .date')[0].text
+        month = elem.select('.tabs .month')[0].text
+        t_min = elem.select('.temperature .min')[0].text
+        t_max = elem.select('.temperature .max')[0].text
+        descr = elem.select('.wDescription .description')[0].text
+        print(day,'\n',date,month,'\n', t_min, t_max)
+        print(descr)
+    bot.send_message(massage.chat.id,'The weather in ' + city + ' city:\n' +
+        day + '\n' + date +' '+ month +'\n'+ t_min +' '+ t_max +'\n'+ descr)
+
 @bot.message_handler(commands=['start'])
 def send_welcom(massage):
-    bot.send_message(massage.chat.id,"Howdy, I can send you the weather in Bilopillya city, show realy beautiful instagram and I'll help you to find job on junior python developer position in Poland or Ukraine. Good luck and have fan \nFor check commands type /help")
+    bot.send_message(massage.chat.id,"Howdy, I can send you the weather in some Ukrainian cities, show realy beautiful instagram and I'll help you to find job on junior python developer position in Poland or Ukraine. Good luck and have fan \nFor check commands type /help")
 
 @bot.message_handler(commands=['help'])
 def send_commands(massage):
@@ -17,26 +33,45 @@ def send_commands(massage):
 
 @bot.message_handler(commands=['weather'])
 def send_weather(massage):
-    def weather_at(url, city):
-        r = requests.get(url)
-        html = bs(r.content,'html.parser')
 
-        for elem in html.select('#content'):
-            day = elem.select('.tabs .day-link')[0].text
-            date = elem.select('.tabs .date')[0].text
-            month = elem.select('.tabs .month')[0].text
-            t_min = elem.select('.temperature .min')[0].text
-            t_max = elem.select('.temperature .max')[0].text
-            descr = elem.select('.wDescription .description')[0].text
-            print(day,'\n',date,month,'\n', t_min, t_max)
-            print(descr)
-        bot.send_message(massage.chat.id,'The weather in ' + city + ' city:\n' +
-            day + '\n' + date +' '+ month +'\n'+ t_min +' '+ t_max +'\n'+ descr)
+    markup_inline = types.InlineKeyboardMarkup()
+    item_bilopillya = types.KeyboardButton(text='Bilopillya', callback_data='Bilopillya')
+    item_kiev = types.KeyboardButton(text='Kiev', callback_data='Kiev')
+    item_sumy = types.KeyboardButton(text='Sumy', callback_data='Sumy')
+    item_kharkiv = types.KeyboardButton(text='Kharkiv', callback_data='Kharkiv')
+    item_lviv = types.KeyboardButton(text='Lviv', callback_data='Lviv')
+    item_khmelnitsky = types.KeyboardButton(text='Khmelnitsky', callback_data='Khmelnitsky')
+    item_drohobych = types.KeyboardButton(text='Drohobych', callback_data='Drohobych')
+
+    markup_inline.row(item_bilopillya, item_sumy, item_kiev)
+    markup_inline.row(item_khmelnitsky, item_lviv)
+    markup_inline.row(item_drohobych, item_kharkiv)
+    bot.send_message(massage.chat.id, 'Choose the city in which you want to see the weather for today', reply_markup=markup_inline)
+
+@bot.callback_query_handler(func = lambda call: True)
+def weather_answer(call):
+    if call.data == 'Bilopillya':
+        weather_at(url="https://sinoptik.ua/погода-белополье", city='Bilopillya')
+    elif call.data == 'Kiev':
+        weather_at(url="https://sinoptik.ua/погода-киев", city='Kiev')
+    elif call.data == 'Sumy':
+        weather_at(url="https://sinoptik.ua/погода-сумы", city='Sumy')
+    elif call.data == 'Kharkiv':
+        weather_at(url="https://sinoptik.ua/погода-белополье", city='Kharkiv')
+    elif call.data == 'Lviv':
+        weather_at(url="https://sinoptik.ua/погода-киев", city='Lviv')
+    elif call.data == 'Khmelnitsky':
+        weather_at(url="https://sinoptik.ua/погода-сумы", city='Khmelnitsky')
+    else:
+        weather_at(url="https://sinoptik.ua/погода-дрогобыч", city='Drohobych')
+
     weather_at(url="https://sinoptik.ua/погода-белополье", city='Bilopillya')
     weather_at(url="https://sinoptik.ua/погода-киев", city='Kiev')
     weather_at(url="https://sinoptik.ua/погода-сумы", city='Sumy')
     weather_at(url="https://sinoptik.ua/погода-харьков", city='Kharkiv')
     weather_at(url="https://sinoptik.ua/погода-львов", city='Lviv')
+    weather_at(url="https://sinoptik.ua/погода-хмельницкий", city='Khmelnitsky')
+    weather_at(url="https://sinoptik.ua/погода-дрогобыч", city='Drohobych')
 
 @bot.message_handler(commands=['instagram'])
 def send_link(massage):
