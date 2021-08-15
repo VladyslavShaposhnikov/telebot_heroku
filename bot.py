@@ -29,19 +29,19 @@ def send_welcom(massage):
 
 @bot.message_handler(commands=['help'])
 def send_commands(massage):
-    bot.send_message(massage.chat.id,'Allows command:\n /weather (To see what is the weather in Bilopillya)\n /instagram (To see Nelya Holik instagram)\n /pracuj (To see job offers in Poland website "Pracuj.pl")\n /rabota (To see job offers in Ukraine website "rabota.ua")')
+    bot.send_message(massage.chat.id,'Allows command:\n /weather (To see what is the weather in some Ukrainian cities)\n /instagram (To see Nelya Holik instagram)\n /pracuj (To see job offers in Poland website "Pracuj.pl")\n /rabota (To see job offers in Ukraine website "rabota.ua")')
 
 @bot.message_handler(commands=['weather'])
-def send_weather(massage):
+def get_city(massage):
 
     markup_inline = types.InlineKeyboardMarkup()
-    item_bilopillya = types.KeyboardButton(text='Bilopillya', callback_data='Bilopillya')
-    item_kiev = types.KeyboardButton(text='Kiev', callback_data='Kiev')
-    item_sumy = types.KeyboardButton(text='Sumy', callback_data='Sumy')
-    item_kharkiv = types.KeyboardButton(text='Kharkiv', callback_data='Kharkiv')
-    item_lviv = types.KeyboardButton(text='Lviv', callback_data='Lviv')
-    item_khmelnitsky = types.KeyboardButton(text='Khmelnitsky', callback_data='Khmelnitsky')
-    item_drohobych = types.KeyboardButton(text='Drohobych', callback_data='Drohobych')
+    item_bilopillya = types.InlineKeyboardButton(text='Bilopillya', callback_data='Bilopillya')
+    item_kiev = types.InlineKeyboardButton(text='Kiev', callback_data='Kiev')
+    item_sumy = types.InlineKeyboardButton(text='Sumy', callback_data='Sumy')
+    item_kharkiv = types.InlineKeyboardButton(text='Kharkiv', callback_data='Kharkiv')
+    item_lviv = types.InlineKeyboardButton(text='Lviv', callback_data='Lviv')
+    item_khmelnitsky = types.InlineKeyboardButton(text='Khmelnitsky', callback_data='Khmelnitsky')
+    item_drohobych = types.InlineKeyboardButton(text='Drohobych', callback_data='Drohobych')
 
     markup_inline.add(item_bilopillya, item_sumy, item_kiev, item_khmelnitsky, item_lviv, item_drohobych, item_kharkiv)
     bot.send_message(massage.chat.id, 'Choose the city in which you want to see the weather for today', reply_markup=markup_inline)
