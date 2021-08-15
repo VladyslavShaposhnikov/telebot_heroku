@@ -32,6 +32,20 @@ def get_city(massage):
 
 @bot.callback_query_handler(func = lambda call: True)
 def weather_answer(call):
+    def weather_at(url, city):
+        r = requests.get(url)
+        html = bs(r.content,'html.parser')
+
+        for elem in html.select('#content'):
+            day = elem.select('.tabs .day-link')[0].text
+            date = elem.select('.tabs .date')[0].text
+            month = elem.select('.tabs .month')[0].text
+            t_min = elem.select('.temperature .min')[0].text
+            t_max = elem.select('.temperature .max')[0].text
+            descr = elem.select('.wDescription .description')[0].text
+        bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text='The weather in ' + city + ' city:\n' +
+            day + '\n' + date +' '+ month +'\n'+ t_min +' '+ t_max +'\n'+ descr)
+
     if call.data == 'Bilopillya':
         weather_at(url="https://sinoptik.ua/погода-белополье", city='Bilopillya')
     elif call.data == 'Kiev':
@@ -46,22 +60,6 @@ def weather_answer(call):
         weather_at(url="https://sinoptik.ua/погода-хмельницкий", city='Khmelnitsky')
     else:
         weather_at(url="https://sinoptik.ua/погода-дрогобыч", city='Drohobych')
-
-def weather_at(url, city):
-    r = requests.get(url)
-    html = bs(r.content,'html.parser')
-
-    for elem in html.select('#content'):
-        day = elem.select('.tabs .day-link')[0].text
-        date = elem.select('.tabs .date')[0].text
-        month = elem.select('.tabs .month')[0].text
-        t_min = elem.select('.temperature .min')[0].text
-        t_max = elem.select('.temperature .max')[0].text
-        descr = elem.select('.wDescription .description')[0].text
-        print(day,'\n',date,month,'\n', t_min, t_max)
-        print(descr)
-    bot.send_message(massage.chat.id,'The weather in ' + city + ' city:\n' +
-        day + '\n' + date +' '+ month +'\n'+ t_min +' '+ t_max +'\n'+ descr)
 
 @bot.message_handler(commands=['instagram'])
 def send_link(massage):
