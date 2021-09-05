@@ -5,10 +5,7 @@ import requests
 from bs4 import BeautifulSoup as bs
 from telebot import types
 
-TOKEN = None
-
-with open("token.txt") as f:
-    TOKEN = f.read().strip()
+TOKEN = os.environ["TOKEN"]
 
 bot = telebot.TeleBot(TOKEN)
 
