@@ -5,9 +5,12 @@ import requests
 from bs4 import BeautifulSoup as bs
 from telebot import types
 
-bot = telebot.TeleBot(os.environ['token'])
+TOKEN = None
 
-print(os.environ['token'])
+with open("token.txt") as f:
+    TOKEN = f.read().strip()
+
+bot = telebot.TeleBot(TOKEN)
 
 @bot.message_handler(commands=['start'])
 def send_welcom(massage):
