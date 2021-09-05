@@ -1,11 +1,13 @@
+import os
+
 import telebot
-from datetime import datetime
 import requests
 from bs4 import BeautifulSoup as bs
 from telebot import types
-from config import token
 
-bot = telebot.TeleBot(token)
+bot = telebot.TeleBot(os.environ['token'])
+
+print(os.environ['token'])
 
 @bot.message_handler(commands=['start'])
 def send_welcom(massage):
